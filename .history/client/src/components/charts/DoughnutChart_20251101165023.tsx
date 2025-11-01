@@ -1,4 +1,9 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -11,7 +16,7 @@ interface DoughnutChartProps {
 export default function DoughnutChart({ income, expense }: DoughnutChartProps) {
   const defaultIncome = 5500;
   const defaultExpense = 3200;
-
+  
   const chartIncome = income !== undefined ? income : defaultIncome;
   const chartExpense = expense !== undefined ? expense : defaultExpense;
 
@@ -36,13 +41,13 @@ export default function DoughnutChart({ income, expense }: DoughnutChartProps) {
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function(context: any) {
             const total = chartIncome + chartExpense;
             const percentage = ((context.parsed / total) * 100).toFixed(1);
             return `${context.label}: $${context.parsed.toLocaleString()} (${percentage}%)`;
-          },
-        },
-      },
+          }
+        }
+      }
     },
   };
 

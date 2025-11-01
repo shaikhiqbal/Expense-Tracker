@@ -16,7 +16,7 @@ import DoughnutChart from '../charts/DoughnutChart';
 import LineChart from '../charts/LineChart';
 import BarChart from '../charts/BarChart';
 import AddTransactionModal from './AddTransactionModal';
-import Loader from '../common/Loader';
+import DashboardSkeleton from '../common/DashboardSkeleton';
 
 export default function Dashboard() {
   const {
@@ -54,7 +54,7 @@ export default function Dashboard() {
   const categories = [...new Set(transactions.map((t) => t.category))];
 
   if (loading && transactions.length === 0) {
-    return <Loader />;
+    return <DashboardSkeleton />;
   }
 
   if (error) {
@@ -82,9 +82,7 @@ export default function Dashboard() {
             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Income vs Expenses</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
-              <DoughnutChart income={totalIncome} expense={totalExpenses} />
-            </div>
+            <DoughnutChart income={totalIncome} expense={totalExpenses} />
           </CardContent>
         </Card>
 

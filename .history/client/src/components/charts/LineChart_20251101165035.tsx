@@ -35,25 +35,24 @@ export default function LineChart({ data }: LineChartProps) {
     { month: 'Mar', income: 4800, expense: 3500 },
     { month: 'Apr', income: 5500, expense: 3100 },
     { month: 'May', income: 5000, expense: 3400 },
-    { month: 'Jun', income: 5800, expense: 2900 },
+    { month: 'Jun', income: 5800, expense: 2900 }
   ];
 
-  const chartData =
-    data && Array.isArray(data) && data.length > 0 ? data : defaultData;
+  const chartData = data && Array.isArray(data) && data.length > 0 ? data : defaultData;
 
   const chartDataConfig = {
-    labels: chartData.map((d) => d.month),
+    labels: chartData.map(d => d.month),
     datasets: [
       {
         label: 'Income',
-        data: chartData.map((d) => d.income),
+        data: chartData.map(d => d.income),
         borderColor: '#59BA89',
         backgroundColor: '#59BA89',
         tension: 0.4,
       },
       {
         label: 'Expenses',
-        data: chartData.map((d) => d.expense),
+        data: chartData.map(d => d.expense),
         borderColor: '#01575A',
         backgroundColor: '#01575A',
         tension: 0.4,
@@ -70,21 +69,21 @@ export default function LineChart({ data }: LineChartProps) {
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function(context: any) {
             return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
-          },
-        },
-      },
+          }
+        }
+      }
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function (value: any) {
+          callback: function(value: any) {
             return '$' + value.toLocaleString();
-          },
-        },
-      },
+          }
+        }
+      }
     },
   };
 
