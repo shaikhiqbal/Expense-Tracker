@@ -29,8 +29,6 @@ export default function Dashboard() {
     balance,
   } = useTransactions();
 
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
   const [chartType, setChartType] = useState<'line' | 'bar'>('line');
 
   const monthlyData = [
@@ -41,17 +39,6 @@ export default function Dashboard() {
     { month: 'May', income: 5200, expense: 3100 },
     { month: 'Jun', income: totalIncome, expense: totalExpenses }
   ];
-
-  // Filter transactions
-  const filteredTransactions = transactions.filter((transaction) => {
-    const matchesCategory =
-      !categoryFilter || transaction.category === categoryFilter;
-    const matchesDate = !dateFilter || transaction.date.startsWith(dateFilter);
-    return matchesCategory && matchesDate;
-  });
-
-  // Get unique categories for filter
-  const categories = [...new Set(transactions.map((t) => t.category))];
 
   if (loading && transactions.length === 0) {
     return <DashboardSkeleton />;
@@ -82,7 +69,9 @@ export default function Dashboard() {
             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Income vs Expenses</CardTitle>
           </CardHeader>
           <CardContent>
-            <DoughnutChart income={totalIncome} expense={totalExpenses} />
+            <div className="h-64 flex items-center justify-center">
+              <DoughnutChart income={totalIncome} expense={totalExpenses} />
+            </div>
           </CardContent>
         </Card>
 
@@ -137,7 +126,7 @@ export default function Dashboard() {
           </div>
         </CardHeader>
         <CardContent>
-          {filteredTransactions.length === 0 ? (
+          {transactions.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400 text-center py-8">
               No transactions found
             </p>
@@ -163,7 +152,7 @@ export default function Dashboard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTransactions.map((transaction) => (
+                {transactions.map((transaction) => (
                   <TableRow
                     key={transaction.id}
                     className="hover:bg-gray-50 dark:hover:bg-gray-700"

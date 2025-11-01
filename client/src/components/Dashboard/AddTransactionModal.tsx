@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -31,10 +31,11 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
   const [selectedType, setSelectedType] = useState<'income' | 'expense'>('expense');
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -67,7 +68,10 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => setSelectedType('expense')}
+              onClick={() => {
+                setSelectedType('expense');
+                setValue('type', 'expense');
+              }}
               className={`p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 font-medium ${
                 selectedType === 'expense'
                   ? 'border-red-500 bg-red-50 text-red-700'
@@ -78,7 +82,10 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
             </button>
             <button
               type="button"
-              onClick={() => setSelectedType('income')}
+              onClick={() => {
+                setSelectedType('income');
+                setValue('type', 'income');
+              }}
               className={`p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 font-medium ${
                 selectedType === 'income'
                   ? 'border-secondary bg-secondary/10 text-secondary'
@@ -88,47 +95,75 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
               Income
             </button>
           </div>
-          <input {...register('type')} type="hidden" value={selectedType} />
+          <Controller
+            name="type"
+            control={control}
+            render={() => <input type="hidden" value={selectedType} />}
+          />
 
           <div>
-            <input
-              {...register('amount')}
-              type="number"
-              step="0.01"
-              placeholder="Amount"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="number"
+                  step="0.01"
+                  placeholder="Amount"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              )}
             />
             {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount.message}</p>}
           </div>
 
           <div>
-            <select
-              {...register('category')}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
-            >
-              <option value="">Select category</option>
-              {categories[selectedType].map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
+            <Controller
+              name="category"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+                >
+                  <option value="">Select category</option>
+                  {categories[selectedType].map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              )}
+            />
             {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
           </div>
 
           <div>
-            <input
-              {...register('description')}
-              type="text"
-              placeholder="Description"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="text"
+                  placeholder="Description"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              )}
             />
             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
           </div>
 
           <div>
-            <input
-              {...register('date')}
-              type="date"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <input
+                  {...field}
+                  type="date"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              )}
             />
             {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>}
           </div>
