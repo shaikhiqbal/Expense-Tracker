@@ -16,7 +16,7 @@ const createTransaction = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: 'Amount is required and must be greater than 0' });
     }
-    if (!category || typeof category !== 'string' || category.trim() === '') {
+    if (!category || category.trim() === '') {
       return res.status(400).json({ error: 'Category is required' });
     }
 
@@ -61,47 +61,17 @@ const getAllTransaction = async (req: Request, res: Response) => {
 
 const searchTransaction = async (req: Request, res: Response) => {
   try {
-    const { type, amount, description = '', category, date } = req.query;
-
-    const query: any = {};
-
-    if (type && ['expense', 'income'].includes(type as string)) {
-      query.type = type;
-    }
-
-    if (amount && Number(amount as string)) {
-      query.amount = amount;
-    }
-
-    if (
-      description &&
-      typeof description === 'string' &&
-      description.trim() !== ''
-    ) {
-      query.description = description;
-    }
-
-    if (category && typeof category == 'string' && category.trim() !== '') {
-      query.category = category;
-    }
-
-    if (date && typeof date == 'string' && date.trim() !== '') {
-      const dateObj = new Date(date as string);
-      const isValidDate = !isNaN(dateObj.getTime());
-
-      if (isValidDate) {
-        query.date = dateObj;
-      }
-    }
-    const transactions = await Transaction.find(query).sort({ date: -1 });
-
+    const { search } = req.query;
+    const transaction = await Transaction.find({
+      $text: { $search: search },
+    }).sort({ date: -1 });
     res.status(200).json({
       success: true,
-      data: transactions,
+      data: transaction,
     });
   } catch (error: any) {
     console.error('Error fetching transactions:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-export { getAllTransaction, createTransaction, searchTransaction };
+export { getAllTransaction, createTransaction };

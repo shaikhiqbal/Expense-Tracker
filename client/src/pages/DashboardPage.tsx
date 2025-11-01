@@ -1,4 +1,5 @@
 import Dashboard from '@/components/Dashboard/Dashboard';
+import { TransactionsTable } from '../components/transactions/TransactionsTable';
 
 export default function DashboardPage() {
   return (
@@ -13,6 +14,9 @@ export default function DashboardPage() {
           </div>
         </div>
         <Dashboard />
+        <div className="mt-8">
+          <TransactionsTable />
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ const connectDB = async (): Promise<void> => {
     await mongoose.connect(mongoURI);
     console.log('MongoDB connected successfully');
   } catch (error) {
-    console.warn('MongoDB connection failed. Running without database:', error.message);
+    console.warn('MongoDB connection failed. Running without database:', (error as Error).message);
     console.log('To use MongoDB: Install and start MongoDB or use MongoDB Atlas');
   }
 };

@@ -1,18 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Transaction, TransactionState } from './types';
+import { Transaction, TransactionState, TransactionFilters } from './types';
 import { transactionsAPI } from './transactionsAPI';
 
 const initialState: TransactionState = {
   transactions: [],
+  total: 0,
   loading: false,
-  error: null
+  error: null,
+  pagination: {
+    offset: 0,
+    limit: 10
+  }
 };
 
 // Async thunks
 export const fetchTransactions = createAsyncThunk(
   'transactions/fetchAll',
-  async () => {
-    return await transactionsAPI.getAll();
+  async (params?: { offset?: number; limit?: number }) => {
+    return await transactionsAPI.getAll(params);
   }
 );
 
@@ -23,12 +28,22 @@ export const addTransaction = createAsyncThunk(
   }
 );
 
+export const searchTransactions = createAsyncThunk(
+  'transactions/search',
+  async (filters: TransactionFilters) => {
+    return await transactionsAPI.search(filters);
+  }
+);
+
 const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    setPagination: (state, action) => {
+      state.pagination = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -40,7 +55,10 @@ const transactionsSlice = createSlice({
       })
       .addCase(fetchTransactions.fulfilled, (state, action) => {
         state.loading = false;
-        state.transactions = action.payload;
+        state.transactions = action.payload.data;
+        state.total = action.payload.total;
+        state.pagination.offset = action.payload.offset;
+        state.pagination.limit = action.payload.limit;
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
@@ -52,14 +70,29 @@ const transactionsSlice = createSlice({
       })
       .addCase(addTransaction.fulfilled, (state, action) => {
         state.loading = false;
-        state.transactions.push(action.payload);
+        state.transactions.unshift(action.payload);
+        state.total += 1;
       })
       .addCase(addTransaction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to add transaction';
+      })
+      // Search transactions
+      .addCase(searchTransactions.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchTransactions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.transactions = action.payload;
+        state.total = action.payload.length;
+      })
+      .addCase(searchTransactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to search transactions';
       });
   }
 });
 
-export const { clearError } = transactionsSlice.actions;
+export const { clearError, setPagination } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

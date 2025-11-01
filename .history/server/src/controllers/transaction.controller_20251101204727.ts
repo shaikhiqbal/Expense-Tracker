@@ -104,4 +104,4 @@ const searchTransaction = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-export { getAllTransaction, createTransaction, searchTransaction };
+export { getAllTransaction, createTransaction };

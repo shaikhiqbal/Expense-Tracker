@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/database';
 import corsMiddleware from './middlewares/cors';
 import healthRoutes from './routes/health.routes';
-import transactionRoutes from './routes/transaction.routes';
+import transactionRoutes from './routes/transactionRoutes';
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/api', transactionRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 // Global error handler
 app.use((err: any, req: any, res: any, next: any) => {

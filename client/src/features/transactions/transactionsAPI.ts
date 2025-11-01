@@ -1,55 +1,48 @@
-import { Transaction } from './types';
-
-// Mock data for demonstration
-const mockTransactions: Transaction[] = [
-  {
-    id: '1',
-    type: 'income',
-    amount: 5000,
-    category: 'Salary',
-    description: 'Monthly salary',
-    date: '2024-01-15'
-  },
-  {
-    id: '2',
-    type: 'expense',
-    amount: 1200,
-    category: 'Rent',
-    description: 'Monthly rent payment',
-    date: '2024-01-01'
-  },
-  {
-    id: '3',
-    type: 'expense',
-    amount: 300,
-    category: 'Food',
-    description: 'Groceries',
-    date: '2024-01-10'
-  },
-  {
-    id: '4',
-    type: 'income',
-    amount: 500,
-    category: 'Freelance',
-    description: 'Web development project',
-    date: '2024-01-20'
-  }
-];
+import api from '../../lib/api';
+import { Transaction, TransactionFilters, PaginatedResponse } from './types';
 
 export const transactionsAPI = {
-  getAll: async (): Promise<Transaction[]> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return mockTransactions;
+  getAll: async (params?: {
+    offset?: number;
+    limit?: number;
+  }): Promise<PaginatedResponse<Transaction>> => {
+    const { data } = await api.get('/transaction', { params });
+    return {
+      data: data.data.transaction.map((t: any) => ({
+        id: t._id,
+        type: t.type,
+        amount: t.amount,
+        category: t.category,
+        description: t.description || '',
+        date: t.date
+      })),
+      total: data.data.total,
+      offset: data.data.offset,
+      limit: data.data.limit
+    };
   },
 
   create: async (transaction: Omit<Transaction, 'id'>): Promise<Transaction> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const newTransaction = {
-      ...transaction,
-      id: Date.now().toString()
+    const { data } = await api.post('/', transaction);
+    return {
+      id: data._id,
+      type: data.type,
+      amount: data.amount,
+      category: data.category,
+      description: data.description || '',
+      date: data.date
     };
-    mockTransactions.push(newTransaction);
-    return newTransaction;
+  },
+
+  search: async (filters: TransactionFilters): Promise<Transaction[]> => {
+    const { data } = await api.get('/search-transaction', { params: filters });
+    return data.data.map((t: any) => ({
+      id: t._id,
+      type: t.type,
+      amount: t.amount,
+      category: t.category,
+      description: t.description || '',
+      date: t.date
+    }));
   }
 };

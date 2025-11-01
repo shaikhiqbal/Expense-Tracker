@@ -4,13 +4,11 @@ import { Router } from 'express';
 import {
   createTransaction,
   getAllTransaction,
-  searchTransaction,
-} from '../controllers/transaction.controller';
+} from '@/controllers/transaction.controller';
 
 const route = Router();
 
 route.post('/', createTransaction);
-route.get('/transaction', getAllTransaction);
-route.get('/search-transaction', searchTransaction);
+route.get('/transaction-record', getAllTransaction);
 
 export default route;

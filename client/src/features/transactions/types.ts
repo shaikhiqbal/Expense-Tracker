@@ -7,14 +7,28 @@ export interface Transaction {
   date: string;
 }
 
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  offset: number;
+  limit: number;
+}
+
 export interface TransactionState {
   transactions: Transaction[];
+  total: number;
   loading: boolean;
   error: string | null;
+  pagination: {
+    offset: number;
+    limit: number;
+  };
 }
 
 export interface TransactionFilters {
+  type?: 'income' | 'expense';
   category?: string;
-  dateFrom?: string;
-  dateTo?: string;
+  description?: string;
+  amount?: number;
+  date?: string;
 }

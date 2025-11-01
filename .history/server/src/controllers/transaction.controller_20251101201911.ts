@@ -16,7 +16,7 @@ const createTransaction = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: 'Amount is required and must be greater than 0' });
     }
-    if (!category || typeof category !== 'string' || category.trim() === '') {
+    if (!category || category.trim() === '') {
       return res.status(400).json({ error: 'Category is required' });
     }
 
@@ -37,13 +37,14 @@ const getAllTransaction = async (req: Request, res: Response) => {
     const { offset = '0', limit = '10' } = req.query;
 
     const skip = parseInt(offset as string, 10);
-    const limitNum = parseInt(limit as string, 10);
+    const limitNum = parseInt(offset as string, 10);
 
     const [transaction, total] = await Promise.all([
       Transaction.find().sort({ date: -1 }).skip(skip).limit(limitNum),
       Transaction.countDocuments(),
     ]);
 
+    // const transactions = await Transaction.find().sort({ date: -1 });
     res.status(200).json({
       success: true,
       data: {
@@ -59,49 +60,4 @@ const getAllTransaction = async (req: Request, res: Response) => {
   }
 };
 
-const searchTransaction = async (req: Request, res: Response) => {
-  try {
-    const { type, amount, description = '', category, date } = req.query;
-
-    const query: any = {};
-
-    if (type && ['expense', 'income'].includes(type as string)) {
-      query.type = type;
-    }
-
-    if (amount && Number(amount as string)) {
-      query.amount = amount;
-    }
-
-    if (
-      description &&
-      typeof description === 'string' &&
-      description.trim() !== ''
-    ) {
-      query.description = description;
-    }
-
-    if (category && typeof category == 'string' && category.trim() !== '') {
-      query.category = category;
-    }
-
-    if (date && typeof date == 'string' && date.trim() !== '') {
-      const dateObj = new Date(date as string);
-      const isValidDate = !isNaN(dateObj.getTime());
-
-      if (isValidDate) {
-        query.date = dateObj;
-      }
-    }
-    const transactions = await Transaction.find(query).sort({ date: -1 });
-
-    res.status(200).json({
-      success: true,
-      data: transactions,
-    });
-  } catch (error: any) {
-    console.error('Error fetching transactions:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-export { getAllTransaction, createTransaction, searchTransaction };
+export { getAllTransaction, createTransaction };

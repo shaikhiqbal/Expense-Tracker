@@ -86,12 +86,7 @@ const searchTransaction = async (req: Request, res: Response) => {
     }
 
     if (date && typeof date == 'string' && date.trim() !== '') {
-      const dateObj = new Date(date as string);
-      const isValidDate = !isNaN(dateObj.getTime());
-
-      if (isValidDate) {
-        query.date = dateObj;
-      }
+      query.date = date;
     }
     const transactions = await Transaction.find(query).sort({ date: -1 });
 
@@ -104,4 +99,4 @@ const searchTransaction = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-export { getAllTransaction, createTransaction, searchTransaction };
+export { getAllTransaction, createTransaction };
