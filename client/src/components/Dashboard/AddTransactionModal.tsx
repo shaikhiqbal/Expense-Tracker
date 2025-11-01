@@ -56,7 +56,7 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90">
+        <Button className="text-white">
           + Add Transaction
         </Button>
       </DialogTrigger>
@@ -74,8 +74,8 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
               }}
               className={`p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 font-medium ${
                 selectedType === 'expense'
-                  ? 'border-red-500 bg-red-50 text-red-700'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-red-300'
+                  ? 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+                  : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-red-300 dark:hover:border-red-500'
               }`}
             >
               Expense
@@ -88,8 +88,8 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
               }}
               className={`p-3 rounded-lg border-2 transition-all flex items-center justify-center gap-2 font-medium ${
                 selectedType === 'income'
-                  ? 'border-secondary bg-secondary/10 text-secondary'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-secondary/50'
+                  ? 'border-secondary bg-secondary/10 dark:bg-secondary/20 text-secondary dark:text-secondary'
+                  : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:border-secondary/50 dark:hover:border-secondary'
               }`}
             >
               Income
@@ -172,7 +172,7 @@ export default function AddTransactionModal({ onAddTransaction, loading }: AddTr
             <Button type="button" variant="outline" onClick={() => setOpen(false)} className="flex-1">
               Cancel
             </Button>
-            <Button type="submit" disabled={loading} className="flex-1">
+            <Button type="submit" disabled={loading} className="flex-1 text-white">
               {loading ? 'Adding...' : 'Add Transaction'}
             </Button>
           </div>

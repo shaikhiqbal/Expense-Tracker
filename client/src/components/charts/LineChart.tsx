@@ -64,6 +64,10 @@ export default function LineChart({ data }: LineChartProps) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 2000,
+      easing: 'easeInOutQuart',
+    },
     plugins: {
       legend: {
         position: 'top' as const,

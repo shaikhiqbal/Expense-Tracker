@@ -62,6 +62,10 @@ export default function BarChart({ data }: BarChartProps) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: {
+      duration: 1500,
+      easing: 'easeInOutQuart',
+    },
     plugins: {
       legend: {
         position: 'top' as const,
