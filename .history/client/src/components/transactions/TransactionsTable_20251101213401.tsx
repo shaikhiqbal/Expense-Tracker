@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { formatCurrency } from '../../utils/formatCurrency';
-import { AddTransactionModal } from './AddTransactionModal';
+import { AddTransactionForm } from './AddTransactionForm';
 
 export const TransactionsTable = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ export const TransactionsTable = () => {
 
   const [filters, setFilters] = useState<TransactionFilters>({});
   const [isSearching, setIsSearching] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     if (!isSearching) {
@@ -108,7 +108,7 @@ export const TransactionsTable = () => {
           </div>
           <div className="flex items-center justify-between">
             <Button
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowAddForm(!showAddForm)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <svg
@@ -124,7 +124,7 @@ export const TransactionsTable = () => {
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Add Transaction
+              {showAddForm ? 'Cancel' : 'Add Transaction'}
             </Button>
           </div>
         </div>
@@ -210,8 +210,12 @@ export const TransactionsTable = () => {
         </div>
       </div>
 
-      {/* Add Transaction Modal */}
-      <AddTransactionModal open={showModal} onOpenChange={setShowModal} />
+      {/* Add Form */}
+      {showAddForm && (
+        <div className="bg-gray-50 dark:bg-gray-800 px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+          <AddTransactionForm />
+        </div>
+      )}
 
       {/* Table Container */}
       <div className="overflow-hidden">

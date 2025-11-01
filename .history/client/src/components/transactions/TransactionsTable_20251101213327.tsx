@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { formatCurrency } from '../../utils/formatCurrency';
-import { AddTransactionModal } from './AddTransactionModal';
+import { AddTransactionForm } from './AddTransactionForm';
 
 export const TransactionsTable = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ export const TransactionsTable = () => {
 
   const [filters, setFilters] = useState<TransactionFilters>({});
   const [isSearching, setIsSearching] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     if (!isSearching) {
@@ -97,36 +97,13 @@ export const TransactionsTable = () => {
     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300">
       {/* Header */}
       <div className=" bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 px-8 py-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex justify-between">
-          <div className="mb-2">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-              Transactions
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Manage your financial transactions
-            </p>
-          </div>
-          <div className="flex items-center justify-between">
-            <Button
-              onClick={() => setShowModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Add Transaction
-            </Button>
-          </div>
+        <div className="mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+            Transactions
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Manage your financial transactions
+          </p>
         </div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           {/* Filters */}
@@ -210,8 +187,12 @@ export const TransactionsTable = () => {
         </div>
       </div>
 
-      {/* Add Transaction Modal */}
-      <AddTransactionModal open={showModal} onOpenChange={setShowModal} />
+      {/* Add Form */}
+      {showAddForm && (
+        <div className="bg-gray-50 dark:bg-gray-800 px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+          <AddTransactionForm />
+        </div>
+      )}
 
       {/* Table Container */}
       <div className="overflow-hidden">
