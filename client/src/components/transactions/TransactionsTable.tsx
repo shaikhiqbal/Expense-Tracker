@@ -165,7 +165,7 @@ export const TransactionsTable = () => {
               className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 rounded-xl"
             />
 
-            <Input
+            {/* <Input
               placeholder="Description"
               value={filters.description || ''}
               onChange={(e) =>
@@ -175,7 +175,7 @@ export const TransactionsTable = () => {
                 })
               }
               className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 rounded-xl"
-            />
+            /> */}
 
             <Input
               type="number"

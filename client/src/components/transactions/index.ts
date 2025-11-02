@@ -1,2 +1,2 @@
 export { TransactionsTable } from './TransactionsTable';
-export { AddTransactionForm } from './AddTransactionForm';
+export { AddTransactionModal } from './AddTransactionModal';

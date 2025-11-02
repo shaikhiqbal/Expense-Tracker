@@ -1,16 +1,14 @@
 import { Router } from 'express';
-
-// ** Controllers
 import {
-  createTransaction,
   getAllTransaction,
+  createTransaction,
   searchTransaction,
 } from '../controllers/transaction.controller';
 
-const route = Router();
+const router = Router();
 
-route.post('/', createTransaction);
-route.get('/transaction', getAllTransaction);
-route.get('/search-transaction', searchTransaction);
+router.get('/transaction', getAllTransaction);
+router.post('/', createTransaction);
+router.get('/search-transaction', searchTransaction);
 
-export default route;
+export default router;

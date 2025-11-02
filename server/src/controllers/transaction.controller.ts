@@ -5,7 +5,6 @@ const createTransaction = async (req: Request, res: Response) => {
   try {
     const { type, amount, category } = req.body;
 
-    // Validation
     if (!type || !['income', 'expense'].includes(type)) {
       return res.status(400).json({
         error: 'Type is required and must be either "income" or "expense"',
@@ -27,7 +26,6 @@ const createTransaction = async (req: Request, res: Response) => {
     if (error.name === 'ValidationError') {
       return res.status(400).json({ error: error.message });
     }
-    console.error('Error creating transaction:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -54,7 +52,6 @@ const getAllTransaction = async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    console.error('Error fetching transactions:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -100,8 +97,8 @@ const searchTransaction = async (req: Request, res: Response) => {
       data: transactions,
     });
   } catch (error: any) {
-    console.error('Error fetching transactions:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 export { getAllTransaction, createTransaction, searchTransaction };

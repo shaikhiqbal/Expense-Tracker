@@ -1,7 +1,7 @@
 {
-  "name": "mern-typescript-app",
+  "name": "expense-tracker-egc",
   "version": "1.0.0",
-  "description": "MERN stack application with TypeScript",
+  "description": "A modern full-stack expense tracking application built with the MERN stack and TypeScript",
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",

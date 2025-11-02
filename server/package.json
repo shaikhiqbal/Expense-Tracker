@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "expense-tracker-server",
   "version": "1.0.0",
-  "description": "Express TypeScript server",
+  "description": "Express TypeScript server for expense tracker application",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
@@ -26,7 +26,6 @@
     "nodemon": "^3.1.10",
     "prettier": "^3.1.1",
     "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
 }
